@@ -53,10 +53,10 @@
           return arr.pop();
         }else if(index === 0){
           return [];
-        }else if(index > arr.length-1){
+        }else if(index > arr.length){
           return arr;
         }else{
-          return arr.slice(arr.indexOf(index)); //the test is wrong i think? shuold be: arr.slice(index)
+          return arr.slice(0 - index);
         }
       };
 
