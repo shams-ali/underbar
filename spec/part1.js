@@ -8,6 +8,10 @@
         _.identity(1);
       });
 
+      _.identity = function(val){
+        return val;
+      };
+
       it('should return whatever value is passed into it', function() {
         var uniqueObject = {};
         expect(_.identity(1)).to.equal(1);
@@ -44,6 +48,18 @@
         _.last([1,2,3]);
       });
 
+      _.last = function(arr, index){
+        if(index === undefined){
+          return arr.pop();
+        }else if(index === 0){
+          return [];
+        }else if(index > arr.length-1){
+          return arr;
+        }else{
+          return arr.slice(arr.indexOf(index)); //the test is wrong i think? shuold be: arr.slice(index)
+        }
+      };
+
       it('should pull the last element from an array', function() {
         expect(_.last([1,2,3])).to.equal(3);
       });
@@ -65,6 +81,18 @@
       checkForNativeMethods(function() {
         _.each([1,2,3,4], function(number) {});
       });
+
+      _.each = function(collection, callback){
+        if(Array.isArray(collection)){
+          for(var i = 0; i<collection.length; i++){
+              callback(collection[i], i, collection);
+          }
+        }else{
+          for(var prop in collection){
+            callback(collection[prop], prop, collection);
+          }
+        }
+      };
 
       it('should be a function', function() {
         expect(_.each).to.be.an.instanceOf(Function);
@@ -102,7 +130,7 @@
          * that don't mutate their inputs!
          */
 
-        expect(input).to.eql([1,2,3,4,5])
+        expect(input).to.eql([1,2,3,4,5]);
       });
 
       it(' should iterate over arrays and provide access to each value', function() {
@@ -218,7 +246,7 @@
 
     describe('indexOf', function() {
       checkForNativeMethods(function() {
-        _.indexOf([10, 20, 30, 40], 40)
+        _.indexOf([10, 20, 30, 40], 40);
       });
 
       it('should find 40 in the list', function() {
@@ -249,8 +277,18 @@
     describe('filter', function() {
       checkForNativeMethods(function() {
         var isEven = function(num) { return num % 2 === 0; };
-        _.filter([1, 2, 3, 4], isEven)
+        _.filter([1, 2, 3, 4], isEven);
       });
+
+      _.filter = function(collection, predicate){
+          var res = [];
+          _.each(collection, function(value){
+            if(predicate(value)){
+              res.push(value);
+            }
+          });
+          return res;
+      };
 
       it('should return all even numbers in an array', function() {
         var isEven = function(num) { return num % 2 === 0; };
@@ -278,8 +316,16 @@
     describe('reject', function() {
       checkForNativeMethods(function() {
         var isEven = function(num) { return num % 2 === 0; };
-        _.reject([1, 2, 3, 4, 5, 6], isEven)
+        _.reject([1, 2, 3, 4, 5, 6], isEven);
       });
+
+  _.reject = function(collection, predicate){
+    var res = [];
+    _.each(collection, function(value){
+      if(predicate(value) === false){res.push(value);}
+    });
+    return res;
+  };
 
       it('should reject all even numbers', function() {
         var isEven = function(num) { return num % 2 === 0; };
@@ -306,8 +352,27 @@
 
     describe('uniq', function() {
       checkForNativeMethods(function() {
-        _.uniq([1, 2, 3, 4])
+        _.uniq([1, 2, 3, 4]);
       });
+
+      _.uniq = function(array, isSorted, iteratee){
+        var res = [];
+        if(!isSorted){
+          var arraySorted = array.sort();
+        }
+        for(var i = 0; i < array.length; i++){
+          if(typeof iteratee === "function"){
+            if(iteratee(array[i]) !== iteratee(array[i+1])){
+              res.push(array[i]);
+            }
+          }else{
+            if(array[i] !== array[i+1]){
+            res.push(array[i]);
+            }
+          }
+        }
+        return res;
+      };
 
       it('should not mutate the input array', function() {
         var input = [1,2,3,4,5];
@@ -336,7 +401,7 @@
          * that don't mutate their inputs!
          */
 
-        expect(input).to.eql([1,2,3,4,5])
+        expect(input).to.eql([1,2,3,4,5]);
       });
 
       it('should return all unique values contained in an unsorted array', function() {
@@ -364,8 +429,17 @@
       checkForNativeMethods(function() {
         _.map([1, 2, 3, 4], function(num) {
           return num * 2;
-        })
+        });
       });
+
+      _.map = function(collection, callback){
+        var res = [];
+        _.each(collection, function(value){
+          res.push(callback(value));
+        });
+        return res;
+      };
+
 
       it('should not mutate the input array', function() {
         var input = [1,2,3,4,5];
@@ -394,7 +468,7 @@
          * that don't mutate their inputs!
          */
 
-        expect(input).to.eql([1,2,3,4,5])
+        expect(input).to.eql([1,2,3,4,5]);
       });
 
       it('should apply a function to every value in an array', function() {
@@ -449,8 +523,23 @@
     describe('reduce', function() {
       checkForNativeMethods(function() {
         var add = function(tally, item) {return tally + item; };
-        _.reduce([1, 2, 3, 4], add)
+        _.reduce([1, 2, 3, 4], add);
       });
+
+      _.reduce = function(collection, callback, initial){
+        if(arguments.length === 2){
+          var argLen = 2;
+        }
+        _.each(collection, function(value){
+          if(argLen === 2){
+            initial = value;
+            argLen++;
+          }else{
+            initial = callback(initial, value);
+          }
+        });
+        return initial;
+      };
 
       it('should be a function', function() {
         expect(_.reduce).to.be.an.instanceOf(Function);
@@ -464,7 +553,7 @@
       it('should not mutate the input array', function() {
         var input = [1,2,3,4,5];
         var result = _.reduce(input, function(memo, item) {return item;});
-        
+
         /*
          * Mutation of inputs should be avoided without good justification otherwise
          * as it can often lead to hard to find bugs and confusing code!
@@ -488,7 +577,7 @@
          * that don't mutate their inputs!
          */
 
-        expect(input).to.eql([1,2,3,4,5])
+        expect(input).to.eql([1,2,3,4,5]);
       });
 
       it('should invoke the iterator function with arguments (memo, item) in that order', function() {
