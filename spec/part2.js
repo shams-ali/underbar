@@ -217,15 +217,14 @@ _.some = function(collection, predicate){
         _.extend({ a: 1 },{ b: 1 }, { c: 1 });
       });
 
-_.extend = function(destination, source){
+_.extend = function(obj){
   var args = Array.prototype.slice.call(arguments);
   for(var i = 0; i < args.length; i++){
-    source = args[i];
-    for(var prop in source){
-      destination[prop] = source[prop];
+    for(var prop in args[i]){
+      obj[prop] = args[i][prop];
     }
   }
-  return destination;
+  return obj;
 };
 
       it('returns the first argument', function() {
@@ -278,17 +277,16 @@ _.extend = function(destination, source){
         _.defaults({ a: 1 },{ b: 1 }, { c: 1 });
       });
 
-_.defaults = function(destination, source){
+_.defaults = function(obj){
   var args = Array.prototype.slice.call(arguments);
   for(var i = 0; i < args.length; i++){
-    source = args[i];
-    for(var prop in source){
-      if(destination[prop] === undefined){
-        destination[prop] = source[prop];
+    for(var prop in args[i]){
+      if(obj[prop] === undefined){
+        obj[prop] = args[i][prop];
       }
     }
   }
-  return destination;
+  return obj;
 };
 
       it('should be a function', function() {
