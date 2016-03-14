@@ -376,6 +376,8 @@
         }
         return res;
       };
+
+      //refactored uniq funciton; not sure if works...
      /* _.uniq = function(array){
         var table = {};
         var res = [];
