@@ -355,7 +355,7 @@
         _.uniq([1, 2, 3, 4]);
       });
 
-      _.uniq = function(array){
+     _.uniq = function(array){
         var args = Array.prototype.slice.call(arguments);
         var iteratee = args[2];
         var copyArray = array.slice().sort();
@@ -376,6 +376,17 @@
         }
         return res;
       };
+     /* _.uniq = function(array){
+        var table = {};
+        var res = [];
+        for(var i = 0; i < array.length; i++){
+          if(!table.hasOwnProperty(array[i])){
+            res.push(array[i]);
+            table[array[i]] = array[i];
+          }
+        }
+        return res;
+      }; */
 
       it('should not mutate the input array', function() {
         var input = [1,2,3,4,5];
