@@ -56,7 +56,7 @@ _.contains = function(collection, item){
          * that don't mutate their inputs!
          */
 
-        expect(input).to.eql([1,2,3,4,5])
+        expect(input).to.eql([1,2,3,4,5]);
       });
 
       it('should return true given an array and a value from that array', function(){
@@ -495,11 +495,12 @@ _.defaults = function(obj){
       if (memo.hasOwnProperty(arg)) {
         return memo[arg];
       } else {
-        memo[args] = callback.apply(this, arguments);
+        memo[args] = callback.apply(this, args);
         return memo[args];
       }
     };
   };
+
 
       it('should produce the same result as the non-memoized version', function() {
         //expect(add(1, 2)).to.equal(3);

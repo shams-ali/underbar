@@ -6,7 +6,7 @@
     describe('invoke, when provided a function reference', function() {
       checkForNativeMethods(function() {
         _.invoke(['dog', 'cat'], _.identity);
-      })
+      });
 
       it('runs the input function on each item in the array, and returns a list of results', function() {
         var reverse = function(){
@@ -92,6 +92,13 @@
       checkForNativeMethods(function() {
         _.flatten([1, [2], [3, [[[4]]]]])
       });
+
+_.flatten = function(arrays){
+  var res = [];
+  for(var i = 0; i<arrays.length; i++){
+
+  }
+};
 
       it('can flatten nested arrays', function() {
         var nestedArray = [1, [2], [3, [[[4]]]]];

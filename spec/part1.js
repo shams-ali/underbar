@@ -355,19 +355,22 @@
         _.uniq([1, 2, 3, 4]);
       });
 
-      _.uniq = function(array, isSorted, iteratee){
+      _.uniq = function(array){
+        var args = Array.prototype.slice.call(arguments);
+        var iteratee = args[2];
+        var copyArray = array.slice().sort();
         var res = [];
-        if(!isSorted){
-          var arraySorted = array.sort();
+        if(!args[1]){
+          copyArray = copyArray.sort();
         }
         for(var i = 0; i < array.length; i++){
           if(typeof iteratee === "function"){
-            if(iteratee(array[i]) !== iteratee(array[i+1])){
-              res.push(array[i]);
+            if(iteratee(copyArray[i]) !== iteratee(copyArray[i+1])){
+              res.push(copyArray[i]);
             }
           }else{
-            if(array[i] !== array[i+1]){
-            res.push(array[i]);
+            if(copyArray[i] !== copyArray[i+1]){
+            res.push(copyArray[i]);
             }
           }
         }
