@@ -182,6 +182,19 @@ _.zip = function(){
         _.intersection(['moe', 'curly', 'larry'], ['moe', 'groucho']);
       });
 
+_.intersection = function(){
+  var args = Array.prototype.slice.call(arguments);
+  var res = [];
+    for(var i = 0; i < args[0].length; i++){
+      for(var j = 0; j < args[1].length; j++){
+        if(args[0][i] === args[1][j]){
+          res.push(args[0][i]);
+        }
+      }
+    }
+  return res;
+};
+
       it('should take the set intersection of two arrays', function() {
         var stooges = ['moe', 'curly', 'larry'];
         var leaders = ['moe', 'groucho'];
