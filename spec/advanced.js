@@ -8,13 +8,19 @@
         _.invoke(['dog', 'cat'], _.identity);
       });
 
-_.invoke = function(array, fn){
+ _.invoke = function(array, fn){
   var res = [];
   for(var i = 0; i < array.length; i++){
-    res.push(fn.apply(array[i]));
+    if(typeof fn === "function"){
+      res.push(fn.apply(array[i]));
+    }
+    if(typeof fn === "string"){
+      res.push(array[i][fn]());
+    }
   }
   return res;
 };
+
 
       it('runs the input function on each item in the array, and returns a list of results', function() {
         var reverse = function(){
