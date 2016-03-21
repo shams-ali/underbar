@@ -129,7 +129,7 @@ _.flatten = function(array){
           for(var i = 0; i<check.length; i++){
               array.push(check[i]);
           }
-          return recursion(array);
+          recursion(array);
         }
       }
       return array;
@@ -149,6 +149,23 @@ _.flatten = function(array){
         _.zip(['moe', 'larry', 'curly'], [30, 40, 50], [true]);
       });
 
+_.zip = function(){
+  var args = Array.prototype.slice.call(arguments);
+  var res = [];
+  var count = [];
+  for(var k = 0; k<args.length;k++){
+    count.push(args[k].length);
+  }
+  var counter = Math.max.apply(Math, count);
+  for(var i = 0; i < args.length; i++){
+    res[i] = [];
+    for(var j = 0; j < counter; j++){
+      res[i].push(args[j][i]);
+    }
+  }
+  return res;
+};
+
       it('should zip together arrays of different lengths', function() {
         var names = ['moe', 'larry', 'curly'], ages = [30, 40, 50], leaders = [true];
 
@@ -162,7 +179,7 @@ _.flatten = function(array){
 
     describe('intersection', function() {
       checkForNativeMethods(function() {
-        _.intersection(['moe', 'curly', 'larry'], ['moe', 'groucho'])
+        _.intersection(['moe', 'curly', 'larry'], ['moe', 'groucho']);
       });
 
       it('should take the set intersection of two arrays', function() {
@@ -176,7 +193,7 @@ _.flatten = function(array){
 
     describe('difference', function() {
       checkForNativeMethods(function() {
-        _.difference([1,2,3], [2,30,40])
+        _.difference([1,2,3], [2,30,40]);
       });
 
       it('should return the difference between two arrays', function() {
@@ -201,7 +218,7 @@ _.flatten = function(array){
       });
 
       checkForNativeMethods(function() {
-        _.throttle(callback, 100)
+        _.throttle(callback, 100);
       });
 
       it('should return a function callable twice in the first 200ms', function() {
