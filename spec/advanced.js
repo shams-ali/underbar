@@ -8,6 +8,14 @@
         _.invoke(['dog', 'cat'], _.identity);
       });
 
+_.invoke = function(array, fn){
+  var res = [];
+  for(var i = 0; i < array.length; i++){
+    res.push(fn.apply(array[i]));
+  }
+  return res;
+};
+
       it('runs the input function on each item in the array, and returns a list of results', function() {
         var reverse = function(){
           return this.split('').reverse().join('');
@@ -23,7 +31,7 @@
     describe('invoke, when provided a method name', function() {
       checkForNativeMethods(function() {
         _.invoke(['dog', 'cat'], 'toUpperCase');
-      })
+      });
 
       it('runs the specified method on each item in the array, and returns a list of results', function() {
         var upperCasedStrings = _.invoke(['dog', 'cat'], 'toUpperCase');
@@ -90,14 +98,23 @@
 
     describe('flatten', function() {
       checkForNativeMethods(function() {
-        _.flatten([1, [2], [3, [[[4]]]]])
+        _.flatten([1, [2], [3, [[[4]]]]]);
       });
 
-_.flatten = function(arrays){
-  var res = [];
-  for(var i = 0; i<arrays.length; i++){
-
-  }
+_.flatten = function(array){
+    function recursion(array){
+      for(var j = 0 ; j < array.length; j++){
+        if(Array.isArray(array[j])){
+          var check = array.splice(array.indexOf(array[j]),1)[0];
+          for(var i = 0; i<check.length; i++){
+              array.push(check[i]);
+          }
+          return recursion(array);
+        }
+      }
+      return array;
+    }
+    return recursion(array);
 };
 
       it('can flatten nested arrays', function() {
@@ -109,7 +126,7 @@ _.flatten = function(arrays){
 
     describe('zip', function() {
       checkForNativeMethods(function() {
-        _.zip(['moe', 'larry', 'curly'], [30, 40, 50], [true])
+        _.zip(['moe', 'larry', 'curly'], [30, 40, 50], [true]);
       });
 
       it('should zip together arrays of different lengths', function() {
