@@ -53,6 +53,20 @@
         });
       });
 
+_.sortBy = function(collection, fn){
+  if(typeof fn === "function"){
+    collection.sort(function(a,b){
+        return fn(a)-fn(b);
+    });
+  }
+  if(typeof fn === "string"){
+    collection.sort(function(a,b){
+      return a[fn] - b[fn];
+    });
+  }
+  return collection;
+};
+
       it('should sort by age', function() {
         var people = [{name : 'curly', age : 50}, {name : 'moe', age : 30}];
         people = _.sortBy(people, function(person) {
