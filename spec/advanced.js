@@ -234,6 +234,20 @@ _.intersection = function(){
         _.throttle(callback, 100);
       });
 
+_.throttle = function(callback, delay){
+  var standby = false;
+  return function(){
+    if(!standby){
+      callback.call();
+      standby = true;
+      setTimeout(function(){
+        standby = false;
+      }, delay);
+    }
+  };
+};
+
+
       it('should return a function callable twice in the first 200ms', function() {
         var fn = _.throttle(callback, 100);
         fn(); // called
