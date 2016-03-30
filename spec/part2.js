@@ -26,13 +26,10 @@
 };*/
 
 _.contains = function(collection, target){
-  var res = false;
-  _.each(collection, function(value){
-    if(target === value){
-      res = true;
-    }
-  });
-  return res;
+  return _.reduce(collection, function(prev, curr){
+    prev = target === curr ? true : prev;
+    return prev;
+  }, false);
 };
 
       it('should be a function', function() {

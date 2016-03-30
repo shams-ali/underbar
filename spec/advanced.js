@@ -125,15 +125,9 @@ _.flatten = function(collection){
   collection = _.reduce(collection, function(prev,curr){
     return prev.concat(curr);
   }, []);
-  var check = _.some(collection, function(value){
+  return _.some(collection, function(value){
     return Array.isArray(value);
-  });
-  return check ? _.flatten(collection) : collection;
-  /*if(check){
-    return _.flatten(collection);
-  }else{
-    return collection;
-  }*/
+  }) ? _.flatten(collection) : collection;
 };
 
       it('can flatten nested arrays', function() {
