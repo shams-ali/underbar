@@ -174,6 +174,21 @@ _.flatten = function(collection){
   return res;
 };*/
 
+//using reduce
+/*_.zip = function(){
+  var args = Array.prototype.slice.call(arguments);
+  var longest = _.sortBy(args.slice(0), "length").pop();
+  return _.reduce(longest, function(prev,curr,i){
+    var res = _.reduce(args, function(prevArg, currArg){
+      prevArg.push(currArg[i]);
+      return prevArg;
+    },[]);
+    prev.push(res);
+    return prev;
+  },[]);
+};*/
+
+//using map
 _.zip = function(){
   var args = Array.prototype.slice.call(arguments);
   var longest = _.sortBy(args.slice(0), "length").pop();

@@ -548,12 +548,14 @@
         if(arguments.length === 2){
           var argLen = 2;
         }
+        var i = 0;
         _.each(collection, function(value){
           if(argLen === 2){
             initial = value;
             argLen++;
           }else{
-            initial = callback(initial, value);
+            initial = callback(initial, value, i);
+            i++;
           }
         });
         return initial;
