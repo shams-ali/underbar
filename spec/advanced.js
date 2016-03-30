@@ -140,26 +140,13 @@ _.sortBy = function(collection, fn){
   }
 };*/
 
-/*_.flatten = function(collection){
+_.flatten = function(collection){
   collection = _.reduce(collection, function(prev,curr){
     return prev.concat(curr);
   }, []);
   return _.some(collection, function(value){
     return Array.isArray(value);
   }) ? _.flatten(collection) : collection;
-};*/
-
-_.flatten = function(nestedArray, result) {
-  var concatenatedArr = _.reduce(nestedArray, function(acc, value){
-      return acc.concat(value);
-  }, []);
-  for (var i = 0; i < concatenatedArr.length; i++){
-    if(Array.isArray(concatenatedArr[i])){
-      return _.flatten(concatenatedArr, result);
-    }
-  }
-  result = concatenatedArr;
-  return result;
 };
 
       it('can flatten nested arrays', function() {
@@ -174,21 +161,27 @@ _.flatten = function(nestedArray, result) {
         _.zip(['moe', 'larry', 'curly'], [30, 40, 50], [true]);
       });
 
-_.zip = function(){
+/*_.zip = function(){
   var args = Array.prototype.slice.call(arguments);
+  var count = _.sortBy(args.slice(0), "length").pop().length;
   var res = [];
-  var count = [];
-  for(var k = 0; k<args.length;k++){
-    count.push(args[k].length);
-  }
-  var counter = Math.max.apply(Math, count);
   for(var i = 0; i < args.length; i++){
     res[i] = [];
-    for(var j = 0; j < counter; j++){
+    for(var j = 0; j < count; j++){
       res[i].push(args[j][i]);
     }
   }
   return res;
+};*/
+
+_.zip = function(){
+  var args = Array.prototype.slice.call(arguments);
+  var longest = _.sortBy(args.slice(0), "length").pop();
+  return _.map(longest, function(value, index){
+    return _.map(args, function(val){
+      return val[index];
+    });
+  });
 };
 
       it('should zip together arrays of different lengths', function() {

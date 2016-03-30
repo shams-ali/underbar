@@ -450,8 +450,10 @@
 
       _.map = function(collection, callback){
         var res = [];
+        var i = 0;
         _.each(collection, function(value){
-          res.push(callback(value));
+          res.push(callback(value, i));
+          i++;
         });
         return res;
       };
