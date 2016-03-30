@@ -215,7 +215,7 @@ _.zip = function(){
         _.intersection(['moe', 'curly', 'larry'], ['moe', 'groucho']);
       });
 
-_.intersection = function(){
+/*_.intersection = function(){
   var args = Array.prototype.slice.call(arguments);
   var res = [];
     for(var i = 0; i < args[0].length; i++){
@@ -226,6 +226,39 @@ _.intersection = function(){
       }
     }
   return res;
+};*/
+
+/*_.intersection = function(){
+  var args = Array.prototype.slice.call(arguments);
+  var longest =  _.sortBy(args.slice(0), "length").pop();
+  return _.reduce(longest, function(prev, value, index){
+    var res = _.map(args, function(val){
+      if(_.contains(val,value)){
+        return value;
+      }
+    });
+    if(_.every(res, function(element){return element === value;})){
+      prev.push(value);
+    }
+    return prev;
+  }, []);
+};*/
+
+_.intersection = function(){
+  var args = Array.prototype.slice.call(arguments);
+  var longest =  _.sortBy(args.slice(0), "length").pop();
+  return _.reduce(longest, function(prev, value, index){
+    var res = _.reduce(args, function(pre, val){
+      if(_.contains(val,value)){
+        pre.push(value);
+      }
+      return pre;
+    },[]).length;
+    if(res === args.length){
+      prev.push(value);
+    }
+    return prev;
+  }, []);
 };
 
       it('should take the set intersection of two arrays', function() {
