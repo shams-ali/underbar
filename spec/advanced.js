@@ -275,6 +275,22 @@ _.intersection = function(){
         _.difference([1,2,3], [2,30,40]);
       });
 
+_difference = function(){
+  var args = Array.prototype.slice.call(arguments);
+  var longest =  _.sortBy(args.slice(0), "length").pop();
+  return _.reduce(longest, function(prev, value, index){
+    var res = _.reduce(args, function(pre, val){
+      if(_.contains(val,value)){
+        pre.push(value);
+      }
+      return pre;
+    },[]).length;
+    if(res === 1){
+      prev.push(value);
+    }
+    return prev;
+  }, []);
+};
 
 
       it('should return the difference between two arrays', function() {
