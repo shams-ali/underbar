@@ -117,8 +117,9 @@ _.contains = function(collection, target){
 
 _.every = function(collection, predicate){
   return _.reduce(collection, function(prev, curr){
-    prev = !predicate ?
-      !curr ? false : prev :
+      prev = !predicate ?
+      !curr ? false : prev
+      :
       !predicate(curr) ? false : prev;
     return prev;
   }, true);
@@ -171,7 +172,7 @@ _.every = function(collection, predicate){
         return number % 2 === 0;
       };
 
-_.some = function(collection, predicate){
+/*_.some = function(collection, predicate){
   var res = false;
   for(var i = 0; i < collection.length; i++){
     if(arguments.length === 1){
@@ -185,7 +186,18 @@ _.some = function(collection, predicate){
     }
   }
   return res;
+};*/
+
+_.some = function(collection, predicate){
+  return _.reduce(collection, function(prev, curr){
+    prev = !predicate ?
+      curr ? true : prev :
+      predicate(curr) ? true : prev;
+      return prev;
+  }, false);
 };
+
+
 
       checkForNativeMethods(function() {
         _.some([4, 5, 6], _.identity);
