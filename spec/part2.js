@@ -99,7 +99,7 @@ _.contains = function(collection, target){
         return num % 2 === 0;
       };
 
-_.every = function(collection, predicate){
+/*_.every = function(collection, predicate){
   var res = true;
   for(var i = 0; i < collection.length; i++){
     if(arguments.length === 1){
@@ -113,6 +113,15 @@ _.every = function(collection, predicate){
     }
   }
   return res;
+};*/
+
+_.every = function(collection, predicate){
+  return _.reduce(collection, function(prev, curr){
+    prev = !predicate ?
+      !curr ? false : prev :
+      !predicate(curr) ? false : prev;
+    return prev;
+  }, true);
 };
 
       checkForNativeMethods(function() {
