@@ -121,20 +121,18 @@ _.sortBy = function(collection, fn){
         _.flatten([1, [2], [3, [[[4]]]]]);
       });
 
-_.flatten = function(array){
-    function recursion(array){
-      for(var j = 0 ; j < array.length; j++){
-        if(Array.isArray(array[j])){
-          var check = array.splice(array.indexOf(array[j]),1)[0];
-          for(var i = 0; i<check.length; i++){
-              array.push(check[i]);
-          }
-          recursion(array);
-        }
-      }
-      return array;
-    }
-    return recursion(array);
+_.flatten = function(collection){
+  collection = _.reduce(collection, function(prev,curr){
+    return prev.concat(curr);
+  }, []);
+  var check = _.some(collection, function(value){
+    return Array.isArray(value);
+  });
+  if(check){
+    return _.flatten(collection);
+  }else{
+    return collection;
+  }
 };
 
       it('can flatten nested arrays', function() {
@@ -208,6 +206,8 @@ _.intersection = function(){
       checkForNativeMethods(function() {
         _.difference([1,2,3], [2,30,40]);
       });
+
+
 
       it('should return the difference between two arrays', function() {
         var diff = _.difference([1,2,3], [2,30,40]);
