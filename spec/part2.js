@@ -8,30 +8,6 @@
         _.contains([4, 5, 6], 2);
       });
 
-/*_.contains = function(collection, item){
-  var res = false;
-  if(Array.isArray(collection)){
-    for(var i =0; i < collection.length; i++){
-      if(collection[i] === item){
-        res = true;
-      }
-    }
-  }else{
-    for(var prop in collection){
-      if(collection[prop] === item){
-        res = true;
-      }
-    }
-  }return res;
-};*/
-
-_.contains = function(collection, target){
-  return _.reduce(collection, function(prev, curr){
-    prev = target === curr ? true : prev;
-    return prev;
-  }, false);
-};
-
       it('should be a function', function() {
         expect(_.contains).to.be.an.instanceOf(Function);
       });
@@ -96,32 +72,6 @@ _.contains = function(collection, target){
         return num % 2 === 0;
       };
 
-/*_.every = function(collection, predicate){
-  var res = true;
-  for(var i = 0; i < collection.length; i++){
-    if(arguments.length === 1){
-      if(!collection[i]){
-        res = false;
-      }
-    }else{
-      if(!predicate(collection[i])){
-        res = false;
-      }
-    }
-  }
-  return res;
-};*/
-
-_.every = function(collection, predicate){
-  return _.reduce(collection, function(prev, curr){
-      prev = !predicate ?
-      !curr ? false : prev
-      :
-      !predicate(curr) ? false : prev;
-    return prev;
-  }, true);
-};
-
       checkForNativeMethods(function() {
         _.every([4, 5, 6], _.identity);
       });
@@ -168,33 +118,6 @@ _.every = function(collection, predicate){
       var isEven = function(number){
         return number % 2 === 0;
       };
-
-/*_.some = function(collection, predicate){
-  var res = false;
-  for(var i = 0; i < collection.length; i++){
-    if(arguments.length === 1){
-      if(collection[i]){
-        res = true;
-      }
-    }else{
-      if(predicate(collection[i])){
-        res = true;
-      }
-    }
-  }
-  return res;
-};*/
-
-_.some = function(collection, predicate){
-  return _.reduce(collection, function(prev, curr){
-    prev = !predicate ?
-      curr ? true : prev :
-      predicate(curr) ? true : prev;
-      return prev;
-  }, false);
-};
-
-
 
       checkForNativeMethods(function() {
         _.some([4, 5, 6], _.identity);
@@ -245,16 +168,6 @@ _.some = function(collection, predicate){
         _.extend({ a: 1 },{ b: 1 }, { c: 1 });
       });
 
-_.extend = function(obj){
-  var args = Array.prototype.slice.call(arguments);
-  for(var i = 0; i < args.length; i++){
-    for(var prop in args[i]){
-      obj[prop] = args[i][prop];
-    }
-  }
-  return obj;
-};
-
       it('returns the first argument', function() {
         var destination = {};
         var source = {};
@@ -304,18 +217,6 @@ _.extend = function(obj){
       checkForNativeMethods(function() {
         _.defaults({ a: 1 },{ b: 1 }, { c: 1 });
       });
-
-_.defaults = function(obj){
-  var args = Array.prototype.slice.call(arguments);
-  for(var i = 0; i < args.length; i++){
-    for(var prop in args[i]){
-      if(obj[prop] === undefined){
-        obj[prop] = args[i][prop];
-      }
-    }
-  }
-  return obj;
-};
 
       it('should be a function', function() {
         expect(_.defaults).to.be.an.instanceOf(Function);
@@ -516,20 +417,6 @@ _.defaults = function(obj){
         });
       });
 
-  _.memoize = function (callback) {
-    var memo = {};
-    return function (arg) {
-      var args = Array.prototype.slice.call(arguments);
-      if (memo.hasOwnProperty(arg)) {
-        return memo[arg];
-      } else {
-        memo[args] = callback.apply(this, args);
-        return memo[args];
-      }
-    };
-  };
-
-
       it('should produce the same result as the non-memoized version', function() {
         //expect(add(1, 2)).to.equal(3);
         expect(memoAdd(1, 2)).to.equal(3);
@@ -584,14 +471,6 @@ _.defaults = function(obj){
         callback = sinon.spy();
       });
 
-  _.delay = function (callback, time) {
-    var callbackArgs = Array.prototype.slice.call(arguments, 2);
-    return setTimeout(function () {
-      return callback.apply(null, callbackArgs);
-    }, time);
-  };
-
-
       checkForNativeMethods(function() {
         _.delay(callback, 100);
       });
@@ -620,14 +499,6 @@ _.defaults = function(obj){
         _.shuffle([1, 2, 3, 4]);
       });
 
-_.shuffle = function(obj){
-  var copy = Array.prototype.slice.call(obj);
-  var shuffled = [];
-  for(var i = 0; i < obj.length; i++){
-    shuffled.push(copy.splice(Math.floor(Math.random() * copy.length), 1).pop());
-  }
-  return shuffled;
-};
       it('should not modify the original object', function() {
         var numbers = [4, 5, 6];
         var shuffled = _.shuffle(numbers).sort();

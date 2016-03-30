@@ -8,20 +8,6 @@
         _.invoke(['dog', 'cat'], _.identity);
       });
 
- _.invoke = function(array, fn){
-  var res = [];
-  for(var i = 0; i < array.length; i++){
-    if(typeof fn === "function"){
-      res.push(fn.apply(array[i]));
-    }
-    if(typeof fn === "string"){
-      res.push(array[i][fn]());
-    }
-  }
-  return res;
-};
-
-
       it('runs the input function on each item in the array, and returns a list of results', function() {
         var reverse = function(){
           return this.split('').reverse().join('');
@@ -52,25 +38,6 @@
           return person.age;
         });
       });
-
-
-/*_.sortBy = function(collection, fn){
-  return collection.sort(function(a,b){
-    if(typeof fn === "function"){
-      return fn(a)-fn(b);
-    }else{
-      if(typeof fn === "string"){
-        return a[fn] - b[fn];
-      }
-    }
-  });
-};*/
-
-_.sortBy = function(collection, fn){
-  return collection.sort(function(a,b){
-    return typeof fn === "function" ? fn(a)-fn(b) : a[fn] - b[fn];
-  });
-};
 
       it('should sort by age', function() {
         var people = [{name : 'curly', age : 50}, {name : 'moe', age : 30}];
@@ -126,29 +93,6 @@ _.sortBy = function(collection, fn){
         _.flatten([1, [2], [3, [[[4]]]]]);
       });
 
-/*var flatten = function(collection){
-  collection = reduce(collection, function(prev,curr){
-    return prev.concat(curr);
-  }, []);
-  var check = any(collection, function(value){
-    return Array.isArray(value);
-  });
-  if(check){
-    return flatten(collection);
-  }else{
-    return collection;
-  }
-};*/
-
-_.flatten = function(collection){
-  collection = _.reduce(collection, function(prev,curr){
-    return prev.concat(curr);
-  }, []);
-  return _.some(collection, function(value){
-    return Array.isArray(value);
-  }) ? _.flatten(collection) : collection;
-};
-
       it('can flatten nested arrays', function() {
         var nestedArray = [1, [2], [3, [[[4]]]]];
 
@@ -160,44 +104,6 @@ _.flatten = function(collection){
       checkForNativeMethods(function() {
         _.zip(['moe', 'larry', 'curly'], [30, 40, 50], [true]);
       });
-
-/*_.zip = function(){
-  var args = Array.prototype.slice.call(arguments);
-  var count = _.sortBy(args.slice(0), "length").pop().length;
-  var res = [];
-  for(var i = 0; i < args.length; i++){
-    res[i] = [];
-    for(var j = 0; j < count; j++){
-      res[i].push(args[j][i]);
-    }
-  }
-  return res;
-};*/
-
-//using reduce
-/*_.zip = function(){
-  var args = Array.prototype.slice.call(arguments);
-  var longest = _.sortBy(args.slice(0), "length").pop();
-  return _.reduce(longest, function(prev,curr,i){
-    var res = _.reduce(args, function(prevArg, currArg){
-      prevArg.push(currArg[i]);
-      return prevArg;
-    },[]);
-    prev.push(res);
-    return prev;
-  },[]);
-};*/
-
-//using map
-_.zip = function(){
-  var args = Array.prototype.slice.call(arguments);
-  var longest = _.sortBy(args.slice(0), "length").pop();
-  return _.map(longest, function(value, index){
-    return _.map(args, function(val){
-      return val[index];
-    });
-  });
-};
 
       it('should zip together arrays of different lengths', function() {
         var names = ['moe', 'larry', 'curly'], ages = [30, 40, 50], leaders = [true];
@@ -215,51 +121,7 @@ _.zip = function(){
         _.intersection(['moe', 'curly', 'larry'], ['moe', 'groucho']);
       });
 
-/*_.intersection = function(){
-  var args = Array.prototype.slice.call(arguments);
-  var res = [];
-    for(var i = 0; i < args[0].length; i++){
-      for(var j = 0; j < args[1].length; j++){
-        if(args[0][i] === args[1][j]){
-          res.push(args[0][i]);
-        }
-      }
-    }
-  return res;
-};*/
 
-/*_.intersection = function(){
-  var args = Array.prototype.slice.call(arguments);
-  var longest =  _.sortBy(args.slice(0), "length").pop();
-  return _.reduce(longest, function(prev, value, index){
-    var res = _.map(args, function(val){
-      if(_.contains(val,value)){
-        return value;
-      }
-    });
-    if(_.every(res, function(element){return element === value;})){
-      prev.push(value);
-    }
-    return prev;
-  }, []);
-};*/
-
-_.intersection = function(){
-  var args = Array.prototype.slice.call(arguments);
-  var longest =  _.sortBy(args.slice(0), "length").pop();
-  return _.reduce(longest, function(prev, value, index){
-    var res = _.reduce(args, function(pre, val){
-      if(_.contains(val,value)){
-        pre.push(value);
-      }
-      return pre;
-    },[]).length;
-    if(res === args.length){
-      prev.push(value);
-    }
-    return prev;
-  }, []);
-};
 
       it('should take the set intersection of two arrays', function() {
         var stooges = ['moe', 'curly', 'larry'];
@@ -274,24 +136,6 @@ _.intersection = function(){
       checkForNativeMethods(function() {
         _.difference([1,2,3], [2,30,40]);
       });
-
-_difference = function(){
-  var args = Array.prototype.slice.call(arguments);
-  var longest =  _.sortBy(args.slice(0), "length").pop();
-  return _.reduce(longest, function(prev, value, index){
-    var res = _.reduce(args, function(pre, val){
-      if(_.contains(val,value)){
-        pre.push(value);
-      }
-      return pre;
-    },[]).length;
-    if(res === 1){
-      prev.push(value);
-    }
-    return prev;
-  }, []);
-};
-
 
       it('should return the difference between two arrays', function() {
         var diff = _.difference([1,2,3], [2,30,40]);
@@ -317,20 +161,6 @@ _difference = function(){
       checkForNativeMethods(function() {
         _.throttle(callback, 100);
       });
-
-_.throttle = function(callback, delay){
-  var standby = false;
-  return function(){
-    if(!standby){
-      callback.call();
-      standby = true;
-      setTimeout(function(){
-        standby = false;
-      }, delay);
-    }
-  };
-};
-
 
       it('should return a function callable twice in the first 200ms', function() {
         var fn = _.throttle(callback, 100);
