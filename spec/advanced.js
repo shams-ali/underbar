@@ -128,11 +128,12 @@ _.flatten = function(collection){
   var check = _.some(collection, function(value){
     return Array.isArray(value);
   });
-  if(check){
+  return check ? _.flatten(collection) : collection;
+  /*if(check){
     return _.flatten(collection);
   }else{
     return collection;
-  }
+  }*/
 };
 
       it('can flatten nested arrays', function() {

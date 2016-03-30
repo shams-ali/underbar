@@ -8,7 +8,7 @@
         _.contains([4, 5, 6], 2);
       });
 
-_.contains = function(collection, item){
+/*_.contains = function(collection, item){
   var res = false;
   if(Array.isArray(collection)){
     for(var i =0; i < collection.length; i++){
@@ -23,6 +23,16 @@ _.contains = function(collection, item){
       }
     }
   }return res;
+};*/
+
+_.contains = function(collection, target){
+  var res = false;
+  _.each(collection, function(value){
+    if(target === value){
+      res = true;
+    }
+  });
+  return res;
 };
 
       it('should be a function', function() {
