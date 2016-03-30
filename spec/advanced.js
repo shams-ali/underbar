@@ -53,18 +53,23 @@
         });
       });
 
+
+/*_.sortBy = function(collection, fn){
+  return collection.sort(function(a,b){
+    if(typeof fn === "function"){
+      return fn(a)-fn(b);
+    }else{
+      if(typeof fn === "string"){
+        return a[fn] - b[fn];
+      }
+    }
+  });
+};*/
+
 _.sortBy = function(collection, fn){
-  if(typeof fn === "function"){
-    collection.sort(function(a,b){
-        return fn(a)-fn(b);
-    });
-  }
-  if(typeof fn === "string"){
-    collection.sort(function(a,b){
-      return a[fn] - b[fn];
-    });
-  }
-  return collection;
+  return collection.sort(function(a,b){
+    return typeof fn === "function" ? fn(a)-fn(b) : a[fn] - b[fn];
+  });
 };
 
       it('should sort by age', function() {
@@ -121,13 +126,40 @@ _.sortBy = function(collection, fn){
         _.flatten([1, [2], [3, [[[4]]]]]);
       });
 
-_.flatten = function(collection){
+/*var flatten = function(collection){
+  collection = reduce(collection, function(prev,curr){
+    return prev.concat(curr);
+  }, []);
+  var check = any(collection, function(value){
+    return Array.isArray(value);
+  });
+  if(check){
+    return flatten(collection);
+  }else{
+    return collection;
+  }
+};*/
+
+/*_.flatten = function(collection){
   collection = _.reduce(collection, function(prev,curr){
     return prev.concat(curr);
   }, []);
   return _.some(collection, function(value){
     return Array.isArray(value);
   }) ? _.flatten(collection) : collection;
+};*/
+
+_.flatten = function(nestedArray, result) {
+  var concatenatedArr = _.reduce(nestedArray, function(acc, value){
+      return acc.concat(value);
+  }, []);
+  for (var i = 0; i < concatenatedArr.length; i++){
+    if(Array.isArray(concatenatedArr[i])){
+      return _.flatten(concatenatedArr, result);
+    }
+  }
+  result = concatenatedArr;
+  return result;
 };
 
       it('can flatten nested arrays', function() {
