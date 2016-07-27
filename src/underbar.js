@@ -221,7 +221,7 @@ _.each = function(collection, callback){
 
 
   // Determine whether all of the elements match a truth test.
-  _.every = function(collection, iterator) {
+  /*_.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
     return _.reduce(collection, function(prev, curr){
         prev = !iterator ?
@@ -230,7 +230,15 @@ _.each = function(collection, callback){
         !iterator(curr) ? false : prev;
       return prev;
     }, true);
-  };
+  };*/
+  _.every = function(collection, iterator){
+  return _.reduce(collection, function(prev, curr){
+    if(!prev){
+      return false;
+    }
+    return iterator(curr);
+  }, true);
+};
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
